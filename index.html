@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blossom's Townsville Mystery</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Cartoon / Comic Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Custom Powerpuff Girls Aesthetic Styling */
+    :root {
+      --ppg-pink: #ff69b4;
+      --ppg-hot-pink: #ff1493;
+      --ppg-light-pink: #ffe4f2;
+      --ppg-red: #e60026;
+      --ppg-orange: #ff6a00;
+      --ppg-green: #58b947;
+      --ppg-purple: #6a2c91;
+      --ppg-yellow: #ffd700;
+      --ppg-black: #111111;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: var(--ppg-pink);
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.35) 0%, transparent 18%),
+        radial-gradient(circle at 85% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 22%),
+        repeating-linear-gradient(
+          -45deg,
+          #ff7eb9,
+          #ff7eb9 24px,
+          #ff65ae 24px,
+          #ff65ae 48px
+        );
+      color: var(--ppg-black);
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    .font-comic-title {
+      font-family: 'Luckiest Guy', cursive;
+      letter-spacing: 0.04em;
+    }
+
+    /* Fluid Responsive Typography via clamp() */
+    .fluid-title {
+      font-size: clamp(1.65rem, 5.5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .fluid-subtitle {
+      font-size: clamp(1.35rem, 4.2vw, 2.25rem);
+      line-height: 1.15;
+    }
+
+    .fluid-body {
+      font-size: clamp(0.92rem, 2.5vw, 1.125rem);
+    }
+
+    .fluid-wishlist-banner {
+      font-size: clamp(2rem, 6.2vw, 3.6rem);
+      line-height: 1.08;
+    }
+
+    /* Bold Comic Borders & Hard Shadows */
+    .comic-card {
+      background: #ffffff;
+      border: 4px solid var(--ppg-black);
+      box-shadow: 8px 8px 0px var(--ppg-black);
+      border-radius: 1.5rem;
+    }
+
+    .comic-badge {
+      border: 3px solid var(--ppg-black);
+      box-shadow: 4px 4px 0px var(--ppg-black);
+    }
+
+    .comic-btn {
+      border: 3.5px solid var(--ppg-black);
+      box-shadow: 5px 5px 0px var(--ppg-black);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+      cursor: pointer;
+      touch-action: manipulation;
+      min-height: 44px;
+    }
+
+    .comic-badge {
+      border: 3px solid var(--ppg-black);
+      box-shadow: 4px 4px 0px var(--ppg-black);
+    }
+
+    .comic-btn {
+      border: 3.5px solid var(--ppg-black);
+      box-shadow: 5px 5px 0px var(--ppg-black);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .comic-btn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px var(--ppg-black);
+    }
+
+    .comic-btn:active:not(:disabled) {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0px var(--ppg-black);
+    }
+
+    /* Heartbeat / Hover Float Animations */
+    @keyframes floatHero {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+
+    .animate-float {
+      animation: floatHero 2.8s ease-in-out infinite;
+    }
+
+    @keyframes pulseStar {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.15) rotate(8deg); }
+    }
+
+    .animate-star {
+      animation: pulseStar 2s ease-in-out infinite;
+    }
+
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-7px); }
+      80% { transform: translateX(7px); }
+    }
+
+    .animate-shake {
+      animation: shakeWrong 0.45s ease-in-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      75% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-pop {
+      animation: popIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Pink Laser Beam Effect */
+    @keyframes laserFlash {
+      0% { opacity: 0.95; transform: scaleY(1.4); }
+      100% { opacity: 0; transform: scaleY(0.1); }
+    }
+
+    .laser-beam {
+      position: absolute;
+      height: 10px;
+      background: linear-gradient(90deg, #ffffff, #ff1493, #ffffff);
+      border-top: 2px solid #111;
+      border-bottom: 2px solid #111;
+      border-radius: 999px;
+      pointer-events: none;
+      transform-origin: left center;
+      animation: laserFlash 0.32s ease-out forwards;
+      z-index: 40;
+    }
+
+    /* Confetti Piece */
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(340px) rotate(540deg); opacity: 0; }
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #111;
+      animation: confettiFall 2.4s linear infinite;
+    }
+
+    /* Custom Townsville Skyline Silhouette */
+    .townsville-skyline {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 140' preserveAspectRatio='none'%3E%3Cpath d='M0,140 L0,90 L45,90 L45,55 L95,55 L95,100 L130,100 L130,35 L185,35 L185,80 L230,80 L230,45 L285,45 L285,95 L335,95 L335,25 L395,25 L395,75 L445,75 L445,40 L510,40 L510,85 L560,85 L560,30 L620,30 L620,90 L675,90 L675,50 L735,50 L735,85 L800,85 L800,140 Z' fill='%23ff99cc' stroke='%23111111' stroke-width='4'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: bottom;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-3 sm:p-6">
+
+  <!-- Top Header / HUD -->
+  <header class="w-full max-w-3xl flex flex-wrap items-center justify-between gap-3 mb-4 z-10">
+    <div class="flex items-center gap-3 bg-white comic-badge px-4 py-2 rounded-2xl">
+      <!-- Heart Emblem -->
+      <svg class="w-7 h-7 text-pink-500 shrink-0" viewBox="0 0 24 24" fill="#ff1493" stroke="#111111" stroke-width="2.2">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block leading-none">Townsville Patrol</span>
+        <h1 class="font-comic-title text-lg sm:text-xl text-gray-900 leading-tight">BLOSSOM'S MYSTERY</h1>
+      </div>
+    </div>
+
+    <!-- Clues Progress & Sound Toggle -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div class="bg-yellow-300 comic-badge px-3.5 py-2 rounded-2xl flex items-center gap-2">
+        <span class="text-xs sm:text-sm font-bold uppercase">Clues:</span>
+        <div id="clue-dots" class="flex gap-1.5">
+          <span class="w-4 h-4 rounded-full border-2 border-black bg-white transition-colors" id="dot-1"></span>
+          <span class="w-4 h-4 rounded-full border-2 border-black bg-white transition-colors" id="dot-2"></span>
+          <span class="w-4 h-4 rounded-full border-2 border-black bg-white transition-colors" id="dot-3"></span>
+        </div>
+      </div>
+
+      <button
+        id="sound-toggle"
+        type="button"
+        aria-label="Toggle Sound"
+        class="comic-btn bg-white hover:bg-pink-100 px-3 py-2 rounded-2xl font-bold text-sm flex items-center gap-1"
+      >
+        <span id="sound-icon">🔊</span>
+        <span class="hidden sm:inline" id="sound-label">SFX ON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Interactive Game Container -->
+  <main id="game-container" class="w-full max-w-3xl comic-card relative overflow-hidden p-5 sm:p-8 my-auto z-10">
+    <!-- Decorative Corner Hearts & Stars -->
+    <div class="pointer-events-none absolute top-3 right-4 opacity-80 animate-star">
+      <svg class="w-8 h-8" viewBox="0 0 32 32">
+        <polygon points="16,2 20,11 30,12 22,19 25,29 16,23 7,29 10,19 2,12 12,11" fill="#ffd700" stroke="#111" stroke-width="2.5"/>
+      </svg>
+    </div>
+
+    <!-- SCREEN 0: INTRO / BRIEFING -->
+    <section id="screen-intro" class="flex flex-col items-center text-center space-y-5 animate-pop">
+      <div class="inline-block bg-pink-500 text-white font-bold text-xs sm:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full comic-badge">
+        🚨 Emergency Hotline Call! 🚨
+      </div>
+
+      <h2 class="font-comic-title text-3xl sm:text-5xl text-pink-600 drop-shadow-[2px_2px_0_#111]">
+        WHO IS BEHIND THE CHAOS IN TOWNSVILLE?!
+      </h2>
+
+      <!-- Custom SVG Illustration of Blossom -->
+      <div class="relative my-1 animate-float" id="blossom-hero-svg">
+        <svg class="w-44 h-48 sm:w-52 sm:h-56 mx-auto drop-shadow-[4px_6px_0_rgba(0,0,0,0.2)]" viewBox="0 0 220 240">
+          <!-- Flowing Orange Back Hair -->
+          <path d="M55,95 C30,135 35,190 60,210 C80,220 140,220 160,210 C185,190 190,135 165,95 Z" fill="#ff6a00" stroke="#111" stroke-width="4.5" stroke-linejoin="round"/>
+          <!-- Iconic Big Red Bow -->
+          <g transform="translate(110, 44)">
+            <!-- Left Bow Loop -->
+            <path d="M-8,0 C-35,-36 -68,-22 -55,8 C-46,28 -18,16 -8,4 Z" fill="#e60026" stroke="#111" stroke-width="4.5" stroke-linejoin="round"/>
+            <!-- Right Bow Loop -->
+            <path d="M8,0 C35,-36 68,-22 55,8 C46,28 18,16 8,4 Z" fill="#e60026" stroke="#111" stroke-width="4.5" stroke-linejoin="round"/>
+            <!-- Center Knot -->
+            <rect x="-11" y="-10" width="22" height="22" rx="7" fill="#e60026" stroke="#111" stroke-width="4.5"/>
+          </g>
+          <!-- Flying Arms -->
+          <path d="M82,155 L42,130 C35,126 32,136 39,142 L78,168 Z" fill="#ffe0bd" stroke="#111" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M138,155 L178,125 C185,120 190,130 182,137 L142,168 Z" fill="#ffe0bd" stroke="#111" stroke-width="4" stroke-linejoin="round"/>
+          <!-- Legs & Mary Jane Shoes -->
+          <rect x="91" y="185" width="14" height="32" rx="6" fill="#ffffff" stroke="#111" stroke-width="4"/>
+          <rect x="115" y="185" width="14" height="32" rx="6" fill="#ffffff" stroke="#111" stroke-width="4"/>
+          <path d="M88,210 H108 V220 C108,225 88,225 88,220 Z" fill="#111"/>
+          <path d="M112,210 H132 V220 C132,225 112,225 112,220 Z" fill="#111"/>
+          <!-- Pink Dress with Black Stripe -->
+          <path d="M82,148 L138,148 L146,188 L74,188 Z" fill="#ff69b4" stroke="#111" stroke-width="4.5" stroke-linejoin="round"/>
+          <rect x="77" y="162" width="66" height="12" fill="#111"/>
+          <!-- Blossom's Oversized Round Head -->
+          <ellipse cx="110" cy="104" rx="52" ry="46" fill="#ffe0bd" stroke="#111" stroke-width="4.5"/>
+          <!-- Orange Bangs -->
+          <path d="M58,100 C58,64 162,64 162,100 C150,86 136,86 126,98 C118,84 102,84 94,98 C84,86 70,86 58,100 Z" fill="#ff6a00" stroke="#111" stroke-width="4.5" stroke-linejoin="round"/>
+          <!-- Huge Powerpuff Eyes (Left) -->
+          <circle cx="88" cy="110" r="20" fill="#ffffff" stroke="#111" stroke-width="3.5"/>
+          <circle cx="91" cy="110" r="14" fill="#ff1493"/>
+          <circle cx="92" cy="110" r="9.5" fill="#111"/>
+          <circle cx="87" cy="105" r="4.5" fill="#ffffff"/>
+          <!-- Huge Powerpuff Eyes (Right) -->
+          <circle cx="132" cy="110" r="20" fill="#ffffff" stroke="#111" stroke-width="3.5"/>
+          <circle cx="129" cy="110" r="14" fill="#ff1493"/>
+          <circle cx="128" cy="110" r="9.5" fill="#111"/>
+          <circle cx="124" cy="105" r="4.5" fill="#ffffff"/>
+          <!-- Confident Smile -->
+          <path d="M103,132 Q110,140 117,132" fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <p class="text-base sm:text-lg font-medium text-gray-800 max-w-xl bg-pink-50 border-3 border-black rounded-2xl p-4">
+        "Bubbles and Buttercup are busy protecting the Mayor! Use my <strong class="text-pink-600">Commander Strategy</strong> and <strong class="text-pink-600">Pink Eye Beams</strong> across 3 Townsville locations to gather clues and unmask the supervillain!"
+      </p>
+
+      <button
+        id="btn-start"
+        type="button"
+        class="comic-btn bg-pink-500 hover:bg-pink-400 text-white font-comic-title text-2xl sm:text-3xl px-8 py-3.5 rounded-2xl tracking-wide"
+      >
+        SAVE TOWNSVILLE! ★
+      </button>
+    </section>
+
+    <!-- SCREEN 1: STAGE 1 - EYE BEAM BOT BLAST -->
+    <section id="screen-stage-1" class="hidden flex-col items-center text-center space-y-4">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="bg-pink-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Stage 1 of 3</span>
+        <span class="bg-yellow-300 text-black text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Townsville Bank</span>
+      </div>
+
+      <h2 class="font-comic-title text-2xl sm:text-4xl text-gray-900">
+        BLAST THE MALFUNCTIONING ROBO-MINIONS!
+      </h2>
+      <p class="text-sm sm:text-base text-gray-700 font-medium">
+        Tap or click all <span id="bots-remaining" class="font-bold text-pink-600">5</span> sneaky security bots to uncover the first clue!
+      </p>
+
+      <!-- Interactive Playfield -->
+      <div
+        id="bot-arena"
+        class="relative w-full h-64 sm:h-72 bg-gradient-to-b from-sky-200 via-pink-100 to-pink-200 border-4 border-black rounded-2xl overflow-hidden shadow-inner"
+      >
+        <!-- Skyline Backdrop -->
+        <div class="townsville-skyline absolute inset-x-0 bottom-0 h-24 opacity-60 pointer-events-none"></div>
+
+        <!-- Mini Blossom Blaster on Left -->
+        <div id="mini-blossom-shooter" class="absolute left-3 top-1/2 -translate-y-1/2 w-16 h-16 pointer-events-none z-20 transition-transform duration-150">
+          <svg viewBox="0 0 100 100">
+            <path d="M50,18 L32,4 L42,24 Z" fill="#e60026" stroke="#111" stroke-width="4"/>
+            <path d="M50,18 L68,4 L58,24 Z" fill="#e60026" stroke="#111" stroke-width="4"/>
+            <circle cx="50" cy="52" r="32" fill="#ffe0bd" stroke="#111" stroke-width="4"/>
+            <path d="M18,48 C22,20 78,20 82,48 C70,38 58,40 50,46 C42,40 30,38 18,48 Z" fill="#ff6a00" stroke="#111" stroke-width="4"/>
+            <circle cx="40" cy="55" r="10" fill="#ff1493" stroke="#111" stroke-width="3"/>
+            <circle cx="62" cy="55" r="10" fill="#ff1493" stroke="#111" stroke-width="3"/>
+          </svg>
+        </div>
+
+        <!-- Bots will be spawned dynamically here -->
+      </div>
+
+      <!-- Clue Banner (Revealed upon completion) -->
+      <div id="clue-box-1" class="hidden w-full bg-green-100 border-3 border-black rounded-2xl p-4 animate-pop">
+        <p class="font-bold text-green-900 fluid-body">
+          🔍 CLUE #1 FOUND: <span class="underline decoration-pink-500 decoration-4">Tufts of green monkey fur & a banana peel!</span>
+        </p>
+        <button
+          type="button"
+          onclick="goToStage(2)"
+          class="mt-3 comic-btn bg-pink-500 text-white font-comic-title text-xl px-6 py-2.5 rounded-xl w-full sm:w-auto"
+        >
+          NEXT LOCATION →
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: STAGE 2 - ICE BREATH FREEZE -->
+    <section id="screen-stage-2" class="hidden flex-col items-center text-center space-y-4">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="bg-pink-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Stage 2 of 3</span>
+        <span class="bg-cyan-300 text-black text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Pokey Oaks Park</span>
+      </div>
+
+      <h2 class="font-comic-title text-2xl sm:text-4xl text-gray-900">
+        USE ICE BREATH ON THE RUNAWAY DOOMSDAY DEVICE!
+      </h2>
+      <p class="text-sm sm:text-base text-gray-700 font-medium">
+        Rapidly tap the <strong class="text-cyan-600">ICE BREATH</strong> button to freeze the overheating machine before it blows!
+      </p>
+
+      <!-- Freeze Gauge & Device Visual -->
+      <div class="w-full max-w-md bg-cyan-50 border-4 border-black rounded-2xl p-5 flex flex-col items-center space-y-4">
+        <div id="device-visual" class="relative w-32 h-32 flex items-center justify-center transition-transform">
+          <!-- Cartoon Gadget SVG -->
+          <svg class="w-28 h-28" viewBox="0 0 120 120">
+            <rect x="25" y="30" width="70" height="65" rx="14" fill="#7e22ce" stroke="#111" stroke-width="4.5"/>
+            <circle cx="60" cy="62" r="20" fill="#fde047" stroke="#111" stroke-width="4"/>
+            <path d="M60,48 L60,62 L70,68" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="30" x2="60" y2="12" stroke="#111" stroke-width="4.5"/>
+            <circle cx="60" cy="10" r="7" fill="#ef4444" stroke="#111" stroke-width="3.5"/>
+          </svg>
+          <!-- Ice Overlay -->
+          <div
+            id="ice-overlay"
+            class="absolute inset-0 bg-cyan-300/75 border-4 border-cyan-600 rounded-2xl flex items-center justify-center font-comic-title text-2xl text-cyan-950 opacity-0 transition-opacity pointer-events-none"
+          >
+            ❄️ FROZEN! ❄️
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-7 bg-white border-3 border-black rounded-full overflow-hidden p-0.5">
+          <div
+            id="freeze-bar"
+            class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-150"
+            style="width: 0%"
+          ></div>
+        </div>
+        <div class="text-xs font-bold uppercase tracking-wider text-cyan-900">
+          Freeze Power: <span id="freeze-percent">0</span>%
+        </div>
+
+        <button
+          id="btn-ice-breath"
+          type="button"
+          class="comic-btn bg-cyan-400 hover:bg-cyan-300 text-black font-comic-title text-xl sm:text-2xl px-6 py-3.5 rounded-2xl w-full sm:w-auto"
+        >
+          ❄️ BLOW ICE BREATH! ❄️
+        </button>
+      </div>
+
+      <!-- Clue 2 Banner -->
+      <div id="clue-box-2" class="hidden w-full bg-green-100 border-3 border-black rounded-2xl p-4 animate-pop">
+        <p class="font-bold text-green-900 fluid-body">
+          🔍 CLUE #2 FOUND: <span class="underline decoration-pink-500 decoration-4">Shattered Chemical X vials from the Professor's lab!</span>
+        </p>
+        <button
+          type="button"
+          onclick="goToStage(3)"
+          class="mt-3 comic-btn bg-pink-500 text-white font-comic-title text-xl px-6 py-2.5 rounded-xl w-full sm:w-auto"
+        >
+          FINAL CLUE →
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: STAGE 3 - LAB EVIDENCE SCAN -->
+    <section id="screen-stage-3" class="hidden flex-col items-center text-center space-y-4">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="bg-pink-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Stage 3 of 3</span>
+        <span class="bg-purple-300 text-black text-xs font-bold uppercase px-3 py-1 rounded-full comic-badge">Observatory Lookout</span>
+      </div>
+
+      <h2 class="font-comic-title text-2xl sm:text-4xl text-gray-900">
+        ANALYZE THE VILLAIN'S SECRET BLUEPRINT!
+      </h2>
+      <p class="text-sm sm:text-base text-gray-700 font-medium">
+        Blossom's genius IQ spots a riddle on the villain's dropped blueprint. Pick the matching evidence!
+      </p>
+
+      <div class="w-full max-w-lg bg-purple-50 border-4 border-black rounded-2xl p-4 sm:p-5 space-y-4">
+        <div class="bg-white border-3 border-black rounded-xl p-3.5 text-left">
+          <span class="text-xs font-bold uppercase text-purple-700 block mb-1">📜 Blueprint Note:</span>
+          <p class="italic font-semibold text-gray-900 text-sm sm:text-base">
+            "Curses! Once I activate my ray, I, the greatest genius with a giant exposed brain inside my white-and-purple turban helmet, shall rule Townsville!"
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="evidence-choices">
+          <button
+            type="button"
+            onclick="checkEvidence(false, this)"
+            class="comic-btn bg-white hover:bg-pink-50 p-3.5 rounded-xl flex flex-col items-center justify-center gap-1"
+          >
+            <span class="text-3xl">🦞</span>
+            <span class="font-bold text-sm">Red Claws & Boots</span>
+          </button>
+          <button
+            type="button"
+            onclick="checkEvidence(true, this)"
+            class="comic-btn bg-white hover:bg-pink-50 p-3.5 rounded-xl flex flex-col items-center justify-center gap-1"
+          >
+            <span class="text-3xl">🧠</span>
+            <span class="font-bold text-sm">Oversized Brain-Dome Blueprint</span>
+          </button>
+          <button
+            type="button"
+            onclick="checkEvidence(false, this)"
+            class="comic-btn bg-white hover:bg-pink-50 p-3.5 rounded-xl flex flex-col items-center justify-center gap-1"
+          >
+            <span class="text-3xl">💰</span>
+            <span class="font-bold text-sm">Spoiled Rich Kid Tiara</span>
+          </button>
+        </div>
+        <p id="evidence-feedback" class="text-sm font-bold text-red-600 hidden"></p>
+      </div>
+
+      <!-- Clue 3 Banner -->
+      <div id="clue-box-3" class="hidden w-full bg-green-100 border-3 border-black rounded-2xl p-4 animate-pop">
+        <p class="font-bold text-green-900 fluid-body">
+          🔍 CLUE #3 FOUND: <span class="underline decoration-pink-500 decoration-4">An oversized brain-dome helmet blueprint!</span>
+        </p>
+        <button
+          type="button"
+          onclick="goToDeduction()"
+          class="mt-3 comic-btn bg-yellow-300 hover:bg-yellow-200 text-black font-comic-title text-xl px-6 py-2.5 rounded-xl w-full sm:w-auto"
+        >
+          UNMASK THE VILLAIN! ⚡
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: FINAL VILLAIN DEDUCTION (MUST BE MOJO JOJO!) -->
+    <section id="screen-deduction" class="hidden flex-col items-center text-center space-y-4">
+      <div class="inline-block bg-purple-700 text-white font-bold text-xs sm:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full comic-badge">
+        🕵️‍♀️ Blossom's Final Deduction 🕵️‍♀️
+      </div>
+
+      <h2 class="font-comic-title fluid-subtitle text-gray-900">
+        WHO IS THE MASTERMIND BEHIND IT ALL?
+      </h2>
+
+      <!-- Summary of All 3 Clues -->
+      <div class="w-full bg-pink-50 border-3 border-black rounded-2xl p-3 text-left grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs sm:text-sm font-semibold">
+        <div class="bg-white border-2 border-black rounded-xl p-2.5">
+          🐒 <strong>Clue 1:</strong> Green monkey fur
+        </div>
+        <div class="bg-white border-2 border-black rounded-xl p-2.5">
+          🧪 <strong>Clue 2:</strong> Shattered Chemical X vials
+        </div>
+        <div class="bg-white border-2 border-black rounded-xl p-2.5">
+          🧠 <strong>Clue 3:</strong> Oversized brain-dome blueprint
+        </div>
+      </div>
+
+      <!-- Interactive Mobile-Friendly Letter-Tile Builder -->
+      <div class="w-full max-w-lg bg-purple-50 border-3 border-black rounded-2xl p-3 space-y-2.5">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-xs font-bold uppercase text-purple-900">Unscramble the Letters:</span>
+          <button
+            type="button"
+            id="btn-clear-tiles"
+            class="text-xs font-bold underline text-pink-700 hover:text-pink-900 py-1 px-2"
+          >
+            Clear Tiles ↺
+          </button>
+        </div>
+        <div id="letter-tiles" class="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+          <!-- Tiles populated via JS -->
+        </div>
+      </div>
+
+      <!-- Interactive Answer Input + Quick-Select Villain Buttons -->
+      <form id="deduction-form" class="w-full max-w-md space-y-3">
+        <div class="flex flex-col sm:flex-row gap-2.5">
+          <input
+            id="villain-input"
+            type="text"
+            autocomplete="off"
+            placeholder="UNSCRAMBLE NAME..."
+            aria-label="Enter final villain answer"
+            class="flex-1 text-center font-bold text-lg px-4 py-3 rounded-xl border-4 border-black bg-white focus:outline-none focus:ring-4 focus:ring-pink-400 uppercase min-h-[48px]"
+          />
+          <button
+            type="submit"
+            class="comic-btn bg-pink-500 hover:bg-pink-400 text-white font-comic-title text-xl px-6 py-3 rounded-xl"
+          >
+            SOLVE!
+          </button>
+        </div>
+        <p id="deduction-error" class="hidden text-sm font-bold text-red-600 bg-red-100 border-2 border-red-600 rounded-xl py-1.5 px-3">
+          Not quite! Unscramble the 8 letters above to reveal the mastermind!
+        </p>
+      </form>
+
+      <!-- Multiple Choice Helper Buttons -->
+      <div class="w-full max-w-lg pt-1">
+        <span class="text-xs font-bold uppercase text-gray-500 block mb-2">Or tap Townsville's Most Wanted:</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button type="button" onclick="submitVillainChoice('Fuzzy Lumpkins')" class="comic-btn bg-white hover:bg-pink-50 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold">
+            Fuzzy Lumpkins
+          </button>
+          <button type="button" onclick="submitVillainChoice('MOJO JOJO')" class="comic-btn bg-green-300 hover:bg-green-200 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-extrabold">
+            MOJO JOJO
+          </button>
+          <button type="button" onclick="submitVillainChoice('HIM')" class="comic-btn bg-white hover:bg-pink-50 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold">
+            HIM
+          </button>
+          <button type="button" onclick="submitVillainChoice('Princess Morbucks')" class="comic-btn bg-white hover:bg-pink-50 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold">
+            Princess Morbucks
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: VICTORY SCREEN - MOJO JOJO REVEAL & WISHLIST BANNER -->
+    <section id="screen-victory" class="hidden flex-col items-center text-center space-y-5 relative">
+      <!-- Confetti Container -->
+      <div id="confetti-container" class="pointer-events-none absolute inset-0 overflow-hidden"></div>
+
+      <div class="inline-block bg-green-500 text-white font-bold text-xs sm:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full comic-badge">
+        ★ Case Solved! Mastermind Unmasked ★
+      </div>
+
+      <!-- Large Bold Wishlist Heading Banner -->
+      <div class="w-full bg-yellow-300 border-4 border-black rounded-3xl p-4 sm:p-6 shadow-[6px_6px_0_#111] animate-pop">
+        <h2 class="font-comic-title fluid-wishlist-banner text-purple-900 drop-shadow-[3px_3px_0_#ffffff]">
+          MY WISHLIST IS FOUND IN MOJOJOJO
+        </h2>
+      </div>
+
+      <!-- Detailed Picture / Custom SVG Illustration of Mojo Jojo -->
+      <div class="flex flex-col items-center justify-center my-1 animate-float">
+        <div class="bg-purple-100 border-4 border-black rounded-3xl p-4 sm:p-5 shadow-[6px_6px_0_#111]">
+          <svg class="w-48 h-52 sm:w-56 sm:h-60 mx-auto drop-shadow-[4px_6px_0_rgba(0,0,0,0.2)]" viewBox="0 0 220 240" role="img" aria-label="Cartoon portrait of Mojo Jojo">
+            <!-- Flowing Purple Cape -->
+            <path d="M52,138 L22,222 L198,222 L168,138 Z" fill="#6a2c91" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M62,142 L42,218 L178,218 L158,142 Z" fill="#7e22ce"/>
+            <!-- Tall White & Purple Striped Brain Helmet -->
+            <path d="M60,92 C60,14 160,14 160,92 Z" fill="#ffffff" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+            <!-- Purple Stripes on Helmet -->
+            <path d="M72,56 Q110,44 148,56 L154,72 Q110,60 66,72 Z" fill="#6a2c91" stroke="#111" stroke-width="3.5"/>
+            <rect x="58" y="76" width="104" height="17" rx="4" fill="#6a2c91" stroke="#111" stroke-width="4.5"/>
+            <!-- Helmet Pink Jewel & Gold Trim -->
+            <circle cx="110" cy="42" r="11" fill="#ff1493" stroke="#111" stroke-width="4"/>
+            <circle cx="107" cy="39" r="3.5" fill="#ffffff"/>
+            <!-- Big Green Monkey Ears -->
+            <circle cx="52" cy="118" r="19" fill="#58b947" stroke="#111" stroke-width="5"/>
+            <circle cx="52" cy="118" r="9" fill="#3f8f31"/>
+            <circle cx="168" cy="118" r="19" fill="#58b947" stroke="#111" stroke-width="5"/>
+            <circle cx="168" cy="118" r="9" fill="#3f8f31"/>
+            <!-- Green Chimp Face -->
+            <ellipse cx="110" cy="122" rx="48" ry="42" fill="#58b947" stroke="#111" stroke-width="5"/>
+            <!-- Mischievous Furrowed Brow -->
+            <path d="M70,104 L104,116 L116,116 L150,104" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Glowing Yellow & Red Villain Eyes -->
+            <circle cx="90" cy="122" r="13" fill="#fde047" stroke="#111" stroke-width="4"/>
+            <circle cx="93" cy="122" r="6" fill="#dc2626"/>
+            <circle cx="91" cy="120" r="2" fill="#ffffff"/>
+            <circle cx="130" cy="122" r="13" fill="#fde047" stroke="#111" stroke-width="4"/>
+            <circle cx="127" cy="122" r="6" fill="#dc2626"/>
+            <circle cx="125" cy="120" r="2" fill="#ffffff"/>
+            <!-- Mischievous Grin -->
+            <path d="M88,144 Q110,158 132,144" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+            <line x1="100" y1="147" x2="100" y2="152" stroke="#111" stroke-width="2.5"/>
+            <line x1="110" y1="148" x2="110" y2="153" stroke="#111" stroke-width="2.5"/>
+            <line x1="120" y1="147" x2="120" y2="152" stroke="#111" stroke-width="2.5"/>
+            <!-- Torso & Iconic Crossed White Belt -->
+            <rect x="72" y="162" width="76" height="54" rx="12" fill="#6a2c91" stroke="#111" stroke-width="5"/>
+            <line x1="74" y1="165" x2="146" y2="213" stroke="#ffffff" stroke-width="9"/>
+            <line x1="146" y1="165" x2="74" y2="213" stroke="#ffffff" stroke-width="9"/>
+            <circle cx="110" cy="189" r="9" fill="#ffd700" stroke="#111" stroke-width="3.5"/>
+          </svg>
+        </div>
+        <span class="bg-purple-800 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full border-3 border-black -mt-3 shadow-[3px_3px_0_#111]">
+          "Curses! You unscrambled my secret wishlist, Blossom!"
+        </span>
+      </div>
+
+      <p class="text-sm sm:text-base font-semibold text-gray-800 max-w-lg bg-pink-50 border-3 border-black rounded-2xl p-3.5">
+        Thanks to <strong>Blossom</strong> and your super-detective skills, <strong>MOJO JOJO</strong> is caught and your wishlist is safely recovered!
+      </p>
+
+      <button
+        id="btn-play-again"
+        type="button"
+        class="comic-btn bg-yellow-300 hover:bg-yellow-200 text-black font-comic-title text-2xl px-8 py-3 rounded-2xl"
+      >
+        PLAY AGAIN ↺
+      </button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-3xl text-center mt-4 text-xs sm:text-sm font-bold text-black/80 z-10">
+    Sugar, Spice, and Everything Nice ★ Townsville Detective Edition
+  </footer>
+
+  <!-- Game Logic & Web Audio Retro Sound Effects -->
+  <script>
+    // --- Web Audio API Synthesizer (No external audio files needed) ---
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.14, delay = 0, gainVal = 0.15) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay);
+        osc.stop(ctx.currentTime + delay + duration);
+      } catch (e) {
+        // Ignore audio errors on restricted environments
+      }
+    }
+
+    function sfxLaser() {
+      playTone(880, 'sawtooth', 0.12, 0, 0.12);
+      playTone(420, 'square', 0.12, 0.04, 0.1);
+    }
+
+    function sfxIce() {
+      playTone(1200, 'triangle', 0.08, 0, 0.12);
+      playTone(1550, 'sine', 0.1, 0.03, 0.1);
+    }
+
+    function sfxClueFound() {
+      playTone(523.25, 'triangle', 0.15, 0, 0.16);
+      playTone(659.25, 'triangle', 0.15, 0.1, 0.16);
+      playTone(783.99, 'triangle', 0.25, 0.2, 0.18);
+    }
+
+    function sfxWrong() {
+      playTone(200, 'sawtooth', 0.18, 0, 0.14);
+      playTone(150, 'sawtooth', 0.22, 0.12, 0.14);
+    }
+
+    function sfxVictoryFanfare() {
+      const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+      const times = [0, 0.12, 0.24, 0.36, 0.52, 0.66];
+      notes.forEach((n, idx) => playTone(n, 'triangle', 0.25, times[idx], 0.18));
+    }
+
+    // --- Game State ---
+    const screens = {
+      intro: document.getElementById('screen-intro'),
+      1: document.getElementById('screen-stage-1'),
+      2: document.getElementById('screen-stage-2'),
+      3: document.getElementById('screen-stage-3'),
+      deduction: document.getElementById('screen-deduction'),
+      victory: document.getElementById('screen-victory'),
+    };
+
+    let botsLeft = 5;
+    let freezeProgress = 0;
+    let stage2Solved = false;
+    let stage3Solved = false;
+
+    function showScreen(key) {
+      Object.values(screens).forEach((el) => {
+        el.classList.add('hidden');
+        el.classList.remove('flex', 'animate-pop');
+      });
+      const target = screens[key];
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('flex', 'animate-pop');
+      }
+    }
+
+    function markClueDot(clueNumber, solved) {
+      const dot = document.getElementById(`dot-${clueNumber}`);
+      if (!dot) return;
+      if (solved) {
+        dot.classList.remove('bg-white');
+        dot.classList.add('bg-pink-500');
+      } else {
+        dot.classList.add('bg-white');
+        dot.classList.remove('bg-pink-500');
+      }
+    }
+
+    // --- Sound Toggle ---
+    document.getElementById('sound-toggle').addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
+      document.getElementById('sound-label').textContent = soundEnabled ? 'SFX ON' : 'SFX OFF';
+      if (soundEnabled) playTone(660, 'sine', 0.1);
+    });
+
+    // --- Start Game ---
+    document.getElementById('btn-start').addEventListener('click', () => {
+      sfxClueFound();
+      goToStage(1);
+    });
+
+    // --- Stage Navigation ---
+    function goToStage(stageNum) {
+      showScreen(stageNum);
+      if (stageNum === 1) setupStage1();
+      if (stageNum === 2) setupStage2();
+      if (stageNum === 3) setupStage3();
+    }
+
+    // --- STAGE 1: BLAST ROBO-MINIONS ---
+    function setupStage1() {
+      botsLeft = 5;
+      document.getElementById('bots-remaining').textContent = botsLeft;
+      document.getElementById('clue-box-1').classList.add('hidden');
+
+      const arena = document.getElementById('bot-arena');
+      // Remove any old bots
+      arena.querySelectorAll('.robo-bot').forEach((b) => b.remove());
+
+      const positions = [
+        { left: '34%', top: '20%' },
+        { left: '56%', top: '16%' },
+        { left: '78%', top: '28%' },
+        { left: '44%', top: '56%' },
+        { left: '70%', top: '58%' },
+      ];
+
+      positions.forEach((pos, idx) => {
+        const botBtn = document.createElement('button');
+        botBtn.type = 'button';
+        botBtn.className =
+          'robo-bot absolute w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-purple-700 border-3 border-black shadow-[4px_4px_0_#111] flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-90 z-30';
+        botBtn.style.left = pos.left;
+        botBtn.style.top = pos.top;
+        botBtn.setAttribute('aria-label', `Robo Minion ${idx + 1}`);
+        botBtn.innerHTML = `
+          <svg class="w-10 h-10" viewBox="0 0 64 64">
+            <rect x="12" y="16" width="40" height="34" rx="8" fill="#a855f7" stroke="#111" stroke-width="4"/>
+            <circle cx="24" cy="31" r="5" fill="#fde047" stroke="#111" stroke-width="2.5"/>
+            <circle cx="40" cy="31" r="5" fill="#fde047" stroke="#111" stroke-width="2.5"/>
+            <line x1="22" y1="42" x2="42" y2="42" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="32" y1="16" x2="32" y2="6" stroke="#111" stroke-width="4"/>
+            <circle cx="32" cy="6" r="4" fill="#ef4444" stroke="#111" stroke-width="2.5"/>
+          </svg>
+        `;
+
+        botBtn.addEventListener('click', () => {
+          if (botBtn.dataset.blasted === 'true') return;
+          botBtn.dataset.blasted = 'true';
+          sfxLaser();
+          firePinkLaser(arena, botBtn);
+
+          botBtn.innerHTML = '<span class="text-2xl">💥</span>';
+          botBtn.classList.replace('bg-purple-700', 'bg-yellow-300');
+          setTimeout(() => botBtn.remove(), 220);
+
+          botsLeft--;
+          document.getElementById('bots-remaining').textContent = Math.max(0, botsLeft);
+
+          if (botsLeft <= 0) {
+            markClueDot(1, true);
+            sfxClueFound();
+            document.getElementById('clue-box-1').classList.remove('hidden');
+          }
+        });
+
+        arena.appendChild(botBtn);
+      });
+    }
+
+    function firePinkLaser(arena, targetEl) {
+      const shooter = document.getElementById('mini-blossom-shooter');
+      const arenaRect = arena.getBoundingClientRect();
+      const sRect = shooter.getBoundingClientRect();
+      const tRect = targetEl.getBoundingClientRect();
+
+      const startX = sRect.left - arenaRect.left + sRect.width * 0.7;
+      const startY = sRect.top - arenaRect.top + sRect.height * 0.5;
+      const endX = tRect.left - arenaRect.left + tRect.width * 0.5;
+      const endY = tRect.top - arenaRect.top + tRect.height * 0.5;
+
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const length = Math.hypot(dx, dy);
+      const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+      const beam = document.createElement('div');
+      beam.className = 'laser-beam';
+      beam.style.left = `${startX}px`;
+      beam.style.top = `${startY}px`;
+      beam.style.width = `${length}px`;
+      beam.style.transform = `rotate(${angle}deg)`;
+      arena.appendChild(beam);
+      setTimeout(() => beam.remove(), 340);
+    }
+
+    // --- STAGE 2: ICE BREATH FREEZE ---
+    function setupStage2() {
+      freezeProgress = 0;
+      stage2Solved = false;
+      updateFreezeUI();
+      document.getElementById('ice-overlay').classList.add('opacity-0');
+      document.getElementById('clue-box-2').classList.add('hidden');
+      document.getElementById('btn-ice-breath').disabled = false;
+    }
+
+    function updateFreezeUI() {
+      document.getElementById('freeze-bar').style.width = `${freezeProgress}%`;
+      document.getElementById('freeze-percent').textContent = freezeProgress;
+    }
+
+    document.getElementById('btn-ice-breath').addEventListener('click', () => {
+      if (stage2Solved) return;
+      sfxIce();
+      freezeProgress = Math.min(100, freezeProgress + 20);
+      updateFreezeUI();
+
+      const device = document.getElementById('device-visual');
+      device.classList.add('scale-95');
+      setTimeout(() => device.classList.remove('scale-95'), 100);
+
+      if (freezeProgress >= 100) {
+        stage2Solved = true;
+        document.getElementById('btn-ice-breath').disabled = true;
+        document.getElementById('ice-overlay').classList.remove('opacity-0');
+        markClueDot(2, true);
+        sfxClueFound();
+        document.getElementById('clue-box-2').classList.remove('hidden');
+      }
+    });
+
+    // --- STAGE 3: EVIDENCE SCAN ---
+    function setupStage3() {
+      stage3Solved = false;
+      document.getElementById('clue-box-3').classList.add('hidden');
+      const feedback = document.getElementById('evidence-feedback');
+      feedback.classList.add('hidden');
+    }
+
+    function checkEvidence(isCorrect, btnEl) {
+      if (stage3Solved) return;
+      const feedback = document.getElementById('evidence-feedback');
+      if (isCorrect) {
+        stage3Solved = true;
+        btnEl.classList.remove('bg-white');
+        btnEl.classList.add('bg-green-300');
+        feedback.classList.add('hidden');
+        markClueDot(3, true);
+        sfxClueFound();
+        document.getElementById('clue-box-3').classList.remove('hidden');
+      } else {
+        sfxWrong();
+        btnEl.classList.add('animate-shake', 'bg-red-100');
+        setTimeout(() => btnEl.classList.remove('animate-shake', 'bg-red-100'), 450);
+        feedback.textContent = 'Hmm, that doesn’t match the giant brain helmet note! Try again!';
+        feedback.classList.remove('hidden');
+      }
+    }
+
+    // --- STAGE 4: FINAL VILLAIN DEDUCTION (MOJO JOJO) ---
+    const deductionLetters = ['M', 'O', 'J', 'O', ' ', 'J', 'O', 'J', 'O'];
+
+    function buildLetterTiles() {
+      const container = document.getElementById('letter-tiles');
+      if (!container) return;
+      container.innerHTML = '';
+      // Scrambled order for fun, touch-friendly tapping
+      const scrambled = ['J', 'M', 'O', 'O', 'J', 'O', 'J', 'O'];
+      scrambled.forEach((char) => {
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.textContent = char;
+        tile.className =
+          'comic-btn bg-white hover:bg-yellow-200 font-comic-title text-lg sm:text-xl w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center';
+        tile.addEventListener('click', () => {
+          playTone(620, 'triangle', 0.08);
+          const input = document.getElementById('villain-input');
+          let current = input.value.toUpperCase();
+          if (current.length === 4) current += ' ';
+          if (current.replace(/\s/g, '').length < 8) {
+            input.value = current + char;
+          }
+          tile.disabled = true;
+          tile.classList.add('opacity-40');
+          if (input.value.replace(/[^a-zA-Z]/g, '').toLowerCase() === 'mojojojo') {
+            setTimeout(() => verifyFinalAnswer(input.value), 220);
+          }
+        });
+        container.appendChild(tile);
+      });
+    }
+
+    document.getElementById('btn-clear-tiles').addEventListener('click', () => {
+      playTone(400, 'sine', 0.08);
+      document.getElementById('villain-input').value = '';
+      document.getElementById('deduction-error').classList.add('hidden');
+      buildLetterTiles();
+    });
+
+    function goToDeduction() {
+      sfxClueFound();
+      document.getElementById('villain-input').value = '';
+      document.getElementById('deduction-error').classList.add('hidden');
+      buildLetterTiles();
+      showScreen('deduction');
+    }
+
+    function verifyFinalAnswer(rawValue) {
+      const cleaned = rawValue.trim().toLowerCase().replace(/[^a-z]/g, '');
+      // Accepts "Mojo Jojo" (with or without spaces/punctuation)
+      if (cleaned === 'mojojojo') {
+        triggerVictory();
+      } else {
+        sfxWrong();
+        const input = document.getElementById('villain-input');
+        const err = document.getElementById('deduction-error');
+        err.classList.remove('hidden');
+        input.classList.add('animate-shake', 'border-red-600');
+        setTimeout(() => input.classList.remove('animate-shake', 'border-red-600'), 450);
+      }
+    }
+
+    document.getElementById('deduction-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = document.getElementById('villain-input').value;
+      verifyFinalAnswer(val);
+    });
+
+    function submitVillainChoice(name) {
+      document.getElementById('villain-input').value = name;
+      verifyFinalAnswer(name);
+    }
+
+    // --- VICTORY SCREEN ---
+    function triggerVictory() {
+      sfxVictoryFanfare();
+      showScreen('victory');
+      spawnConfetti();
+    }
+
+    function spawnConfetti() {
+      const container = document.getElementById('confetti-container');
+      container.innerHTML = '';
+      const colors = ['#ff1493', '#ffd700', '#00e5ff', '#58b947', '#ffffff', '#ff6a00'];
+
+      for (let i = 0; i < 28; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece rounded-sm';
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * 1.5}s`;
+        piece.style.animationDuration = `${1.8 + Math.random() * 1.4}s`;
+        container.appendChild(piece);
+      }
+    }
+
+    // --- Play Again Reset ---
+    document.getElementById('btn-play-again').addEventListener('click', () => {
+      markClueDot(1, false);
+      markClueDot(2, false);
+      markClueDot(3, false);
+      playTone(523.25, 'triangle', 0.14);
+      showScreen('intro');
+    });
+  </script>
+</body>
+</html>
